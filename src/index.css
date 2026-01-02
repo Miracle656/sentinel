@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* Sui Design System - Custom Variables */
+:root {
+  --sui-blue: #298dff;
+  --sui-blue-bright: #3C9AFB;
+  --sui-blue-glow: rgba(41, 141, 255, 0.4);
+  --bg-deep: #000000;
+  --bg-navy: #0A0F1E;
+  --font-main: 'Twkeverett', 'TW Cen MT', 'Inter', Arial, sans-serif;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  background-color: var(--bg-deep);
+  color: #ffffff;
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-family: var(--font-main);
+}
+
+/* Glow Effect Utilities */
+.text-glow {
+  text-shadow:
+    0 0 40px var(--sui-blue-glow),
+    0 0 80px rgba(41, 141, 255, 0.2);
+}
+
+.box-glow {
+  box-shadow: 0 0 24px var(--sui-blue-glow);
+}
+
+.box-glow-hover:hover {
+  box-shadow: 0 0 32px rgba(41, 141, 255, 0.6);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(41, 141, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(41, 141, 255, 0.5);
+}
