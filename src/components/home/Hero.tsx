@@ -1,35 +1,44 @@
 /**
- * Hero Component - Landing page hero section
+ * Hero Component - Sui Design with Sharp Edges
  */
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRightIcon, PlayIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import Button from '../shared/Button';
 
 export default function Hero() {
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-            {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#0284FE]/10 via-transparent to-transparent"></div>
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32">
+            {/* Radial Gradient Background - Sui Style */}
+            <div className="absolute inset-0 bg-black">
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(41, 141, 255, 0.15), transparent 50%)'
+                    }}
+                />
             </div>
 
             {/* Grid Pattern Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
 
             {/* Content */}
-            <div className="relative z-10 container mx-auto px-6 py-24 text-center">
+            <div className="relative z-10 container mx-auto px-6 py-0 text-center">
                 <div className="max-w-4xl mx-auto">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0284FE]/10 border border-[#0284FE]/30 rounded-full text-sm text-[#0284FE] mb-8">
-                        <span className="w-2 h-2 bg-[#0284FE] rounded-full animate-pulse"></span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-sui-blue/10 border border-sui-blue/30 text-sui-blue text-sm font-semibold mb-8">
+                        <ShieldCheckIcon className="w-4 h-4" />
                         Powered by Gemini 3 AI
                     </div>
 
-                    {/* Headline */}
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    {/* Headline with Glow */}
+                    <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
                         Secure Your Sui Smart Contracts in{' '}
-                        <span className="bg-gradient-to-r from-[#0284FE] to-cyan-400 bg-clip-text text-transparent">
+                        <span
+                            className="text-sui-blue"
+                            style={{
+                                textShadow: '0 0 60px rgba(41, 141, 255, 0.6), 0 0 30px rgba(41, 141, 255, 0.4)'
+                            }}
+                        >
                             Seconds
                         </span>
                     </h1>
@@ -43,28 +52,32 @@ export default function Hero() {
                     {/* CTA Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
                         <Link to="/analyzer">
-                            <Button size="lg" icon={ArrowRight}>
+                            <Button size="lg" icon={ArrowRightIcon}>
                                 Analyze Contract
                             </Button>
                         </Link>
                         <Link to="/demo">
-                            <Button size="lg" variant="outline" icon={Play}>
+                            <Button size="lg" variant="outline" icon={PlayIcon}>
                                 View Demo
                             </Button>
                         </Link>
                     </div>
 
-                    {/* Isometric Illustration Placeholder */}
+                    {/* Visual Placeholder - Sharp Edges */}
                     <div className="relative max-w-2xl mx-auto">
-                        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 backdrop-blur-sm">
+                        <div className="bg-gradient-to-br from-sui-card/50 to-sui-card/20 border border-sui-blue/20 p-8 backdrop-blur-sm">
                             <div className="aspect-video flex items-center justify-center">
                                 <div className="text-center">
-                                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#0284FE]/20 to-transparent border-2 border-[#0284FE]/50 flex items-center justify-center">
-                                        <svg className="w-16 h-16 text-[#0284FE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                                        </svg>
+                                    <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-sui-blue/20 to-transparent border-2 border-sui-blue/50 flex items-center justify-center animate-pulse-glow">
+                                        <ShieldCheckIcon className="w-16 h-16 text-sui-blue" />
                                     </div>
-                                    <p className="text-sm text-zinc-500">Visual attack flow diagrams coming soon</p>
+                                    <p className="text-lg font-semibold text-sui-blue mb-2">Interactive Attack Flow Diagrams</p>
+                                    <p className="text-sm text-zinc-400 mb-4">Visualize vulnerabilities with Mermaid diagrams in the analyzer</p>
+                                    <Link to="/analyzer">
+                                        <span className="text-sui-blue hover:text-white transition-colors text-sm font-medium">
+                                            Try the Analyzer →
+                                        </span>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -72,10 +85,10 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* Scroll Indicator */}
+            {/* Scroll Indicator - Sharp */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                <div className="w-6 h-10 border-2 border-zinc-700 rounded-full flex items-start justify-center p-2">
-                    <div className="w-1 h-2 bg-[#0284FE] rounded-full"></div>
+                <div className="w-6 h-10 border-2 border-zinc-700 flex items-start justify-center p-2">
+                    <div className="w-1 h-2 bg-sui-blue" />
                 </div>
             </div>
         </section>

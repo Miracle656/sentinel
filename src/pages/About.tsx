@@ -1,7 +1,6 @@
 /**
  * About Page
  */
-import React from 'react';
 import { Shield, Cpu, Lock, Zap } from 'lucide-react';
 import Card from '../components/shared/Card';
 

@@ -1,7 +1,6 @@
 /**
  * Footer Component
  */
-import React from 'react';
 import { Shield, Github, Twitter } from 'lucide-react';
 
 export default function Footer() {
@@ -51,7 +50,7 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-zinc-800 mt-8 pt-8 text-center text-sm text-zinc-500">
-                    <p>© 2026 Sentinel. Built for Gemini Hackathon with ❤️</p>
+                    <p>© 2026 Sentinel.</p>
                 </div>
             </div>
         </footer>

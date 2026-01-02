@@ -1,7 +1,7 @@
 /**
  * Application Constants
  */
-import type { SeverityLevel, VulnerabilityType, ApiConfig } from '../types';
+import type { SeverityLevel, VulnerabilityType } from '../types';
 
 export const SEVERITY_LEVELS: Record<string, SeverityLevel> = {
     CRITICAL: 'Critical' as const,
@@ -55,9 +55,12 @@ export const SEVERITY_WEIGHTS: Record<SeverityLevel, number> = {
     Low: 5,
 };
 
-export const API_CONFIG: ApiConfig = {
-    endpoint: 'https://api.anthropic.com/v1/messages',
-    model: 'claude-sonnet-4-20250514',
-    apiVersion: '2023-06-01',
-    maxTokens: 4096,
+/**
+ * Google Gemini API Configuration
+ */
+export const API_CONFIG = {
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY || '',
+    model: 'gemini-3-flash-preview',
+    maxTokens: 8192,
 };

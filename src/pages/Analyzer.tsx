@@ -1,60 +1,43 @@
 /**
- * Analyzer Page - Main analysis interface
+ * Analyzer Page - Main analysis interface with history tracking
  */
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import CodeEditor from '../components/analyzer/CodeEditor';
 import AnalysisPanel from '../components/analyzer/AnalysisPanel';
 import Button from '../components/shared/Button';
-import { analyzeContract } from '../services/gemini';
+import { useAnalysis } from '../hooks/useAnalysis';
 import { demoContracts } from '../data/demoContracts';
 
 export default function Analyzer() {
     const [code, setCode] = useState('// Paste your Sui Move contract here\n\nmodule example::contract {\n    // Your code...\n}');
-    const [analysisState, setAnalysisState] = useState('empty'); // empty, loading, results, error
-    const [analysisResults, setAnalysisResults] = useState(null);
     const [selectedDemo, setSelectedDemo] = useState('');
 
-    const handleAnalyze = async () => {
-        if (!code.trim()) {
-            setAnalysisState('error');
-            setAnalysisResults({ error: 'Please enter some code to analyze' });
-            return;
-        }
+    // Use custom hook for analysis state management with history
+    const { state, results, analyze } = useAnalysis();
 
-        setAnalysisState('loading');
-
-        try {
-            const results = await analyzeContract(code);
-            setAnalysisResults(results);
-            setAnalysisState('results');
-        } catch (error) {
-            setAnalysisState('error');
-            setAnalysisResults({ error: error.message });
-        }
+    const handleAnalyze = () => {
+        analyze(code);
     };
 
-    const handleDemoSelect = (e) => {
+    const handleDemoSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const contractKey = e.target.value;
         setSelectedDemo(contractKey);
 
         if (contractKey && demoContracts[contractKey]) {
             setCode(demoContracts[contractKey].code);
-            // Reset analysis when new demo is selected
-            setAnalysisState('empty');
-            setAnalysisResults(null);
         }
     };
 
     const handleExport = () => {
-        if (!analysisResults) return;
+        if (!results) return;
 
         const report = {
             timestamp: new Date().toISOString(),
-            score: analysisResults.score,
-            summary: analysisResults.summary,
-            vulnerabilities: analysisResults.vulnerabilities,
-            recommendations: analysisResults.recommendations,
+            score: results.score,
+            summary: results.summary,
+            vulnerabilities: results.vulnerabilities,
+            recommendations: results.recommendations,
         };
 
         const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
@@ -80,7 +63,7 @@ export default function Analyzer() {
                         <select
                             value={selectedDemo}
                             onChange={handleDemoSelect}
-                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 pr-10 text-sm appearance-none cursor-pointer hover:border-[#0284FE] transition-colors"
+                            className="bg-zinc-800 border border-zinc-700 px-4 py-2 pr-10 text-sm appearance-none cursor-pointer hover:border-sui-blue transition-colors"
                         >
                             <option value="">Select Example Contract...</option>
                             <option value="vulnerable_defi">🔴 Vulnerable DeFi Protocol</option>
@@ -91,8 +74,8 @@ export default function Analyzer() {
                     </div>
                 </div>
 
-                <Button onClick={handleAnalyze} disabled={analysisState === 'loading'}>
-                    {analysisState === 'loading' ? 'Analyzing...' : 'Analyze Contract'}
+                <Button onClick={handleAnalyze} disabled={state === 'loading'}>
+                    {state === 'loading' ? 'Analyzing...' : 'Analyze Contract'}
                 </Button>
             </div>
 
@@ -104,10 +87,10 @@ export default function Analyzer() {
                 </div>
 
                 {/* Right: Analysis Panel */}
-                <div className="w-1/2">
+                <div className="w-1/2 h-full">
                     <AnalysisPanel
-                        state={analysisState}
-                        results={analysisResults}
+                        state={state}
+                        results={results}
                         onExport={handleExport}
                     />
                 </div>

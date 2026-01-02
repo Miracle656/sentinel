@@ -1,7 +1,7 @@
 /**
  * SecurityScore Component - Circular progress with Sui glow
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SecurityScoreProps {
     score: number;
@@ -87,7 +87,7 @@ export default function SecurityScore({ score }: SecurityScoreProps) {
 
             <div className="mt-6 text-center">
                 <div className="text-xl font-bold mb-2">Security Score</div>
-                <div className={`text-sm font-semibold ${textColor} px-4 py-1.5 rounded-full bg-${label === 'Good' ? 'green' : label === 'Warning' ? 'yellow' : 'red'}-500/20 border border-${label === 'Good' ? 'green' : label === 'Warning' ? 'yellow' : 'red'}-500/50`}>
+                <div className={`text-sm font-semibold ${textColor} px-4 py-1.5  bg-${label === 'Good' ? 'green' : label === 'Warning' ? 'yellow' : 'red'}-500/20 border border-${label === 'Good' ? 'green' : label === 'Warning' ? 'yellow' : 'red'}-500/50`}>
                     {label}
                 </div>
             </div>

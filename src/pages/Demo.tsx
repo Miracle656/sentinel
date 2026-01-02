@@ -1,7 +1,7 @@
 /**
  * Demo Page - Interactive demo with pre-loaded contracts
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Play, AlertTriangle, CheckCircle } from 'lucide-react';
 import Card from '../components/shared/Card';
 import Button from '../components/shared/Button';
@@ -9,7 +9,7 @@ import { demoContracts } from '../data/demoContracts';
 import { Link } from 'react-router-dom';
 
 export default function Demo() {
-    const [selectedContract, setSelectedContract] = useState(null);
+    const [selectedContract, setSelectedContract] = useState<string | null>(null);
 
     const contracts = Object.entries(demoContracts).map(([key, contract]) => ({
         key,
@@ -21,7 +21,7 @@ export default function Demo() {
             <div className="container mx-auto px-6">
                 <div className="max-w-6xl mx-auto">
                     {/* Header */}
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16 mt-10">
                         <h1 className="text-5xl font-bold mb-4">Interactive Demo</h1>
                         <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
                             Explore how Sentinel analyzes real Sui Move contracts for security vulnerabilities.

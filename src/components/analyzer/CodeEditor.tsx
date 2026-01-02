@@ -1,7 +1,7 @@
 /**
  * CodeEditor Component - Monaco Editor for Move code
  */
-import React from 'react';
+
 import Editor from '@monaco-editor/react';
 
 interface CodeEditorProps {

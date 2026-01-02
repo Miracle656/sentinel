@@ -1,7 +1,7 @@
 /**
  * Header Component - Detached Floating Navbar (Sui Style)
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 

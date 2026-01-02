@@ -1,7 +1,7 @@
 /**
  * AttackDiagram Component - Mermaid.js diagram renderer
  */
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 
 // Initialize Mermaid with dark theme
@@ -34,8 +34,8 @@ interface AttackDiagramProps {
 
 export default function AttackDiagram({ diagram }: AttackDiagramProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [svg, setSvg] = React.useState<string>('');
-    const [error, setError] = React.useState<string | null>(null);
+    const [svg, setSvg] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const renderDiagram = async () => {
@@ -57,14 +57,14 @@ export default function AttackDiagram({ diagram }: AttackDiagramProps) {
 
     if (error) {
         return (
-            <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-6">
+            <div className="bg-zinc-950 border border-zinc-800  p-6">
                 <p className="text-red-400 text-sm">{error}</p>
             </div>
         );
     }
 
     return (
-        <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-6 overflow-x-auto">
+        <div className="bg-zinc-950 border border-zinc-800  p-6 overflow-x-auto">
             <div className="mb-3">
                 <h4 className="text-sm font-semibold text-zinc-300">Attack Flow Diagram</h4>
             </div>

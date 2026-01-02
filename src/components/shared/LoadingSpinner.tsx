@@ -1,7 +1,6 @@
 /**
  * LoadingSpinner Component - Animated loading indicator
  */
-import React from 'react';
 import { Loader2 } from 'lucide-react';
 
 type SpinnerSize = 'sm' | 'md' | 'lg' | 'xl';
