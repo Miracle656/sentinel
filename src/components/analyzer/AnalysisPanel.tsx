@@ -8,6 +8,7 @@ import LoadingSpinner from '../shared/LoadingSpinner';
 import { ExclamationTriangleIcon, CheckCircleIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import Button from '../shared/Button';
 import type { AnalysisResults } from '../../types';
+import AttackDiagram from './AttackDiagram';
 
 interface AnalysisPanelProps {
     state: 'empty' | 'loading' | 'error' | 'results';
@@ -78,9 +79,16 @@ export default function AnalysisPanel({ state, results, onExport }: AnalysisPane
                     {/* Summary */}
                     {results.summary && (
                         <div className="px-6 pb-4">
-                            <div className="bg-sui-card/60 border border-sui-blue/20 p-4">
+                            <div className="bg-sui-card/60 border border-sui-blue/20 p-4 mb-4">
                                 <p className="text-sm text-zinc-300 leading-relaxed">{results.summary}</p>
                             </div>
+
+                            {/* Attack Diagram */}
+                            {results.attack_diagram && (
+                                <div className="mb-2">
+                                    <AttackDiagram diagram={results.attack_diagram} />
+                                </div>
+                            )}
                         </div>
                     )}
 

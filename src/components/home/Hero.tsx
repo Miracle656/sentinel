@@ -4,6 +4,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon, PlayIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import Button from '../shared/Button';
+import sentinelImg from '../../assets/sentinel.png';
 
 export default function Hero() {
     return (
@@ -63,22 +64,36 @@ export default function Hero() {
                         </Link>
                     </div>
 
-                    {/* Visual Placeholder - Sharp Edges */}
-                    <div className="relative max-w-2xl mx-auto">
-                        <div className="bg-gradient-to-br from-sui-card/50 to-sui-card/20 border border-sui-blue/20 p-8 backdrop-blur-sm">
-                            <div className="aspect-video flex items-center justify-center">
-                                <div className="text-center">
-                                    <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-sui-blue/20 to-transparent border-2 border-sui-blue/50 flex items-center justify-center animate-pulse-glow">
-                                        <ShieldCheckIcon className="w-16 h-16 text-sui-blue" />
-                                    </div>
-                                    <p className="text-lg font-semibold text-sui-blue mb-2">Interactive Attack Flow Diagrams</p>
-                                    <p className="text-sm text-zinc-400 mb-4">Visualize vulnerabilities with Mermaid diagrams in the analyzer</p>
-                                    <Link to="/analyzer">
-                                        <span className="text-sui-blue hover:text-white transition-colors text-sm font-medium">
-                                            Try the Analyzer →
-                                        </span>
-                                    </Link>
-                                </div>
+                    {/* Sentinel Visual - 3D Pop Out Effect */}
+                    <div className="relative max-w-lg mx-auto mt-32 mb-12 perspective-1000">
+                        {/* The "Platform" / Card Base - Tilted */}
+                        <div className="relative z-10 bg-gradient-to-b from-sui-card/60 to-sui-card/20 border border-sui-blue/20 p-1 rounded-2xl backdrop-blur-md transform rotate-x-12 scale-90 shadow-2xl shadow-sui-blue/10">
+                            <div className="bg-black/40 rounded-xl overflow-hidden relative h-64 border border-white/5">
+                                {/* Grid Floor inside card */}
+                                <div className="absolute inset-0 bg-[linear-gradient(rgba(41,141,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(41,141,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] perspective-origin-bottom transform rotate-x-45 scale-150 opacity-50" />
+
+                                {/* Holographic Projection Light */}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-sui-blue/30 blur-[40px] rounded-full" />
+                            </div>
+                        </div>
+
+                        {/* The Sentinel - Popping OUT of the card */}
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[100%] z-20 pointer-events-none transform -translate-y-4">
+                            <img
+                                src={sentinelImg}
+                                alt="Sentinel AI"
+                                className="w-full h-auto drop-shadow-2xl"
+                                style={{
+                                    filter: 'drop-shadow(0 0 10px rgba(41, 141, 255, 0.4))'
+                                }}
+                            />
+
+                            {/* Floating UI Elements */}
+                            <div className="absolute top-1/3 right-4 animate-bounce-slow bg-black/90 border border-sui-blue/50 px-3 py-1 rounded text-[10px] text-sui-blue shadow-lg shadow-sui-blue/20 backdrop-blur-sm">
+                                ● PROTECTION ACTIVE
+                            </div>
+                            <div className="absolute top-1/2 left-8 animate-bounce-delay bg-black/90 border border-sui-blue/50 px-3 py-1 rounded text-[10px] text-sui-blue shadow-lg shadow-sui-blue/20 backdrop-blur-sm">
+                                🛡️ THREAT SCANNING
                             </div>
                         </div>
                     </div>
@@ -86,9 +101,10 @@ export default function Hero() {
             </div>
 
             {/* Scroll Indicator - Sharp */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                <div className="w-6 h-10 border-2 border-zinc-700 flex items-start justify-center p-2">
-                    <div className="w-1 h-2 bg-sui-blue" />
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+                <div className="flex flex-col items-center gap-2">
+                    <span className="text-[10px] uppercase tracking-widest text-zinc-500">Scroll</span>
+                    <div className="w-[1px] h-12 bg-gradient-to-b from-sui-blue/0 via-sui-blue/50 to-sui-blue/0" />
                 </div>
             </div>
         </section>

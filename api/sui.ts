@@ -5,23 +5,17 @@
  * Endpoint: /api/sui
  */
 
-export default async function handler(request: Request) {
-    if (request.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-            status: 405,
-            headers: { 'Content-Type': 'application/json' }
-        });
+// @ts-ignore
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        const body = await request.json();
-        const { query, variables } = body;
+        const { query, variables } = req.body;
 
         if (!query) {
-            return new Response(JSON.stringify({ error: 'Query is required' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return res.status(400).json({ error: 'Query is required' });
         }
 
         const endpoint = 'https://sui-mainnet.mystenlabs.com/graphql';
@@ -30,32 +24,21 @@ export default async function handler(request: Request) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Add any necessary headers here if Mysten requires auth in future
             },
             body: JSON.stringify({ query, variables })
         });
 
         if (!response.ok) {
-            return new Response(JSON.stringify({ error: `Sui API Error: ${response.statusText}` }), {
-                status: response.status,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return res.status(response.status).json({ error: `Sui API Error: ${response.statusText}` });
         }
 
         const data = await response.json();
-
-        return new Response(JSON.stringify(data), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
+        return res.status(200).json(data);
 
     } catch (error) {
         console.error('Sui Proxy Error:', error);
-        return new Response(JSON.stringify({
+        return res.status(500).json({
             error: error instanceof Error ? error.message : 'Internal Server Error'
-        }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
         });
     }
 }

@@ -32,6 +32,7 @@ export interface AnalysisResults {
     vulnerabilities: Vulnerability[];
     summary: string;
     recommendations: string[];
+    attack_diagram?: string;
     timestamp: string;
 }
 

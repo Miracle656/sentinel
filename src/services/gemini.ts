@@ -18,6 +18,8 @@ interface AnalysisResponse {
     summary: string;
     vulnerabilities: Vulnerability[];
     recommendations: string[];
+    attack_diagram?: string;
+    score?: number;
 }
 
 /**
@@ -48,13 +50,18 @@ export async function analyzeContract(contractCode: string): Promise<AnalysisRes
 
         const analysisText = data.candidates[0].content.parts[0].text;
         const parsedResults = parseAnalysisResults(analysisText);
-        const score = calculateSecurityScore(parsedResults.vulnerabilities);
+
+        // Use AI score if provided, otherwise cleanup and fallback
+        const score = parsedResults.score !== undefined
+            ? parsedResults.score
+            : calculateSecurityScore(parsedResults.vulnerabilities);
 
         return {
             score,
             vulnerabilities: parsedResults.vulnerabilities || [],
             summary: parsedResults.summary || '',
             recommendations: parsedResults.recommendations || [],
+            attack_diagram: parsedResults.attack_diagram,
             timestamp: new Date().toISOString()
         };
 
@@ -81,7 +88,54 @@ function parseAnalysisResults(responseText: string): AnalysisResponse {
 
         return JSON.parse(jsonText.trim());
     } catch (error) {
-        console.error('Parse error:', error);
+        console.error('Standard JSON parse failed, attempting regex extraction:', error);
+
+        // Fallback: Try to extract fields via Regex if JSON is truncated or malformed
+        try {
+            const summaryMatch = responseText.match(/"summary"\s*:\s*"([^"]*)"/);
+            const scoreMatch = responseText.match(/"score"\s*:\s*(\d+)/);
+            // Simple extraction for attack_diagram - might fail if it contains escaped quotes, but better than nothing
+            const diagramMatch = responseText.match(/"attack_diagram"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+
+
+            const vulns: Vulnerability[] = [];
+            // Regex to match individual vulnerability objects within the array
+            // Matches { ... "confidence": "..." } patterns
+            const vulnRegex = /{\s*"severity":\s*"([^"]+)",\s*"type":\s*"([^"]+)",\s*"location":\s*"([^"]+)",\s*"title":\s*"([^"]+)",\s*"description":\s*"([^"]+)",\s*"code_snippet":\s*"([^"]*)",\s*"fix":\s*"((?:[^"\\]|\\.)*)",\s*"confidence":\s*"([^"]+)"\s*}/g;
+
+            let match;
+            while ((match = vulnRegex.exec(responseText)) !== null) {
+                vulns.push({
+                    severity: match[1] as any,
+                    type: match[2] as any,
+                    location: match[3],
+                    title: match[4],
+                    description: match[5],
+                    code_snippet: match[6],
+                    fix: match[7],
+                    confidence: match[8] as any
+                });
+            }
+
+            if (summaryMatch) {
+                let cleanDiagram = diagramMatch ? diagramMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"') : undefined;
+                if (cleanDiagram) {
+                    // Fix Mermaid syntax errors caused by Move '::' syntax
+                    cleanDiagram = cleanDiagram.replace(/::/g, '_');
+                }
+
+                return {
+                    summary: summaryMatch[1],
+                    score: scoreMatch ? parseInt(scoreMatch[1]) : 0,
+                    vulnerabilities: vulns, // Return extracted vulns instead of empty array
+                    recommendations: ["Analysis data was truncated, but key components were recovered."],
+                    attack_diagram: cleanDiagram
+                };
+            }
+        } catch (e) {
+            console.error('Regex extraction failed:', e);
+        }
+
         console.error('Response text:', responseText);
         throw new Error('Failed to parse analysis results');
     }

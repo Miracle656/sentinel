@@ -97,7 +97,11 @@ Identify security issues related to: defaults, capabilities, shared objects, tra
 
 Return JSON ONLY:
 {
+Return JSON ONLY:
+{
   "summary": "Brief summary",
+  "score": 0-100 (integer, lower is worse security),
+  "attack_diagram": "REQUIRED. Mermaid sequenceDiagram string illustrating the attack flow. Use \\n for newlines. Start with 'sequenceDiagram'. Participant names must be simple words (no '::' or special chars).",
   "vulnerabilities": [
     {
       "severity": "Critical" | "High" | "Medium" | "Low",
@@ -114,36 +118,38 @@ Return JSON ONLY:
 }`;
 }
 
-export default async function handler(request: Request) {
-    if (request.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-            status: 405,
-            headers: { 'Content-Type': 'application/json' }
-        });
+// @ts-ignore
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        const { code } = await request.json();
+        const { code } = req.body;
 
         if (!code) {
-            return new Response(JSON.stringify({ error: 'Contract code is required' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return res.status(400).json({ error: 'Contract code is required' });
         }
 
         const prompt = buildAnalysisPrompt(code);
+
+        // Manual loading for local dev fallback
+        if (!process.env.GEMINI_API_KEY) {
+            try {
+                // @ts-ignore
+                const dotenv = await import('dotenv');
+                dotenv.config({ path: '.env.local' });
+            } catch (e) { console.log('dotenv not found'); }
+        }
+
         const apiKey = process.env.GEMINI_API_KEY;
 
         if (!apiKey) {
             console.error('Server Configuration Error: GEMINI_API_KEY is missing');
-            return new Response(JSON.stringify({ error: 'Server configuration error' }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return res.status(500).json({ error: 'Server configuration error' });
         }
 
-        const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+        const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -168,25 +174,16 @@ export default async function handler(request: Request) {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Gemini API Error:', errorText);
-            return new Response(JSON.stringify({ error: `Gemini API failed: ${response.statusText}` }), {
-                status: response.status,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return res.status(response.status).json({ error: `Gemini API failed: ${response.statusText}` });
         }
 
         const data = await response.json();
-        return new Response(JSON.stringify(data), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
+        return res.status(200).json(data);
 
     } catch (error) {
         console.error('Handler Error:', error);
-        return new Response(JSON.stringify({
+        return res.status(500).json({
             error: error instanceof Error ? error.message : 'Internal Server Error'
-        }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
         });
     }
 }
