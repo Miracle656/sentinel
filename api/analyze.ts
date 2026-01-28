@@ -76,54 +76,42 @@ if (time % 2 == 0) { // ❌ Predictable / Manipulatable by validator
     }
 ];
 
+// Lite version of Knowledge Base to prevent 504 Timeouts
 function buildAnalysisPrompt(code: string): string {
+    // We strictly limit the context to key concepts to save tokens and processing time
     const knowledgeBaseContext = KNOWLEDGE_BASE.map(item =>
-        `- Pattern: ${item.type}\n  Context: ${item.description}\n  Bad Code: ${item.bad_code.trim()}\n  Fix: ${item.good_code.trim()}\n  Why: ${item.explanation}`
-    ).join('\n\n');
+        `- ${item.type}: ${item.description} (Why: ${item.explanation})`
+    ).join('\n');
 
-    return `You are an expert security auditor specializing in Sui Move smart contracts.
-
-Analyze this Move contract for security vulnerabilities:
+    return `You are a Sui Move security auditor. Analyze this contract for vulnerabilities.
 
 \`\`\`move
 ${code}
 \`\`\`
 
-### 🧠 Reference Knowledge Base (Known Vulnerability Patterns)
-Use these patterns derived from real audit reports to guide your analysis. If you see code matching these patterns, flag it immediately.
-
+### Knowledge Base (Patterns to check)
 ${knowledgeBaseContext}
 
-### Analysis Instructions
-Analyze security. Focus on these Move vulnerabilities:
-1. **Capability Leaks**
-2. **Shared Object Issues**
-3. **Object Wrapping Bugs**
-4. **Transfer Policy Violations**
-5. **Witness Misuse**
-6. **Access Control Flaws**
-7. **Timestamp Manipulation**
-8. **Integer Overflow/Underflow**
+### Output Instructions
+Identify security issues related to: defaults, capabilities, shared objects, transfer rules, upgrades, and arithmetic.
 
-Output JSON ONLY:
+Return JSON ONLY:
 {
-  "summary": "Short overview",
+  "summary": "Brief summary",
   "vulnerabilities": [
     {
       "severity": "Critical" | "High" | "Medium" | "Low",
-      "type": "Category",
-      "location": "Module::Function",
-      "title": "Concise Title",
-      "description": "Explanation invoking Knowledge Base if relevant.",
-      "code_snippet": "Code",
-      "fix": "Fixed Code",
+      "type": "Vulnerability Type",
+      "location": "Function name",
+      "title": "Short title",
+      "description": "Concise explanation.",
+      "code_snippet": "Relevant code",
+      "fix": "Fixed code snippet",
       "confidence": "High"
     }
   ],
-  "recommendations": ["Rec 1", "Rec 2"]
-}
-
-CRITICAL: Return ONLY valid JSON, no markdown code blocks, no explanations outside the JSON.`;
+  "recommendations": ["Action item 1", "Action item 2"]
+}`;
 }
 
 export default async function handler(request: Request) {
