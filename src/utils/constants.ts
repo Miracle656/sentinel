@@ -58,9 +58,8 @@ export const SEVERITY_WEIGHTS: Record<SeverityLevel, number> = {
 /**
  * Google Gemini API Configuration
  */
+// API Config removed - Analysis is now proxied via /api/analyze for security.
 export const API_CONFIG = {
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
-    apiKey: import.meta.env.VITE_GEMINI_API_KEY || '',
-    model: 'gemini-3-flash-preview',
+    // Left for reference or other public endpoints if needed
     maxTokens: 8192,
 };
