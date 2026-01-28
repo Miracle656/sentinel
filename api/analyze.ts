@@ -95,50 +95,32 @@ Use these patterns derived from real audit reports to guide your analysis. If yo
 ${knowledgeBaseContext}
 
 ### Analysis Instructions
-Focus on these Move-specific vulnerability types:
-1. **Capability Leaks**: Improper handling of capability objects that could grant unauthorized access
-2. **Shared Object Issues**: Race conditions or improper synchronization with shared objects
-3. **Object Wrapping Bugs**: Incorrect wrapping/unwrapping patterns that could expose internals
-4. **Transfer Policy Violations**: Missing or improper transfer restrictions
-5. **Witness Pattern Misuse**: Incorrect one-time witness implementation
-6. **Access Control Flaws**: Missing ownership checks or improper permission validation
-7. **Timestamp Manipulation**: Unsafe reliance on clock objects
-8. **Integer Overflow/Underflow**: Arithmetic operations without proper bounds checking
+Analyze security. Focus on these Move vulnerabilities:
+1. **Capability Leaks**
+2. **Shared Object Issues**
+3. **Object Wrapping Bugs**
+4. **Transfer Policy Violations**
+5. **Witness Misuse**
+6. **Access Control Flaws**
+7. **Timestamp Manipulation**
+8. **Integer Overflow/Underflow**
 
-For EACH vulnerability found, provide:
-- **severity**: "Critical" | "High" | "Medium" | "Low"
-- **type**: The vulnerability category from above
-- **location**: "module_name::function_name" or "line X-Y"
-- **title**: Short descriptive title (max 60 chars)
-- **description**: Detailed explanation (2-3 paragraphs). Cite specific patterns from the Knowledge Base if applicable.
-- **code_snippet**: The exact problematic code section
-- **attack_scenario**: Step-by-step how an attacker would exploit this
-- **mermaid_diagram**: Mermaid.js graph syntax showing attack flow (use "graph TD" format)
-- **fix**: Corrected version of the code with explanation
-- **confidence**: "High" | "Medium" | "Low"
-
-Also provide:
-- **summary**: 2-3 sentence overview of the contract's security posture
-- **recommendations**: 3-5 general security improvements
-
-Return your response in this EXACT JSON structure (no markdown formatting):
+Output JSON ONLY:
 {
-  "summary": "...",
+  "summary": "Short overview",
   "vulnerabilities": [
     {
-      "severity": "Critical",
-      "type": "Capability Leak",
-      "location": "defi::withdraw",
-      "title": "...",
-      "description": "...",
-      "code_snippet": "...",
-      "attack_scenario": "...",
-      "mermaid_diagram": "graph TD\\n    A[Attacker] --> B[...]",
-      "fix": "...",
+      "severity": "Critical" | "High" | "Medium" | "Low",
+      "type": "Category",
+      "location": "Module::Function",
+      "title": "Concise Title",
+      "description": "Explanation invoking Knowledge Base if relevant.",
+      "code_snippet": "Code",
+      "fix": "Fixed Code",
       "confidence": "High"
     }
   ],
-  "recommendations": ["...", "...", "..."]
+  "recommendations": ["Rec 1", "Rec 2"]
 }
 
 CRITICAL: Return ONLY valid JSON, no markdown code blocks, no explanations outside the JSON.`;

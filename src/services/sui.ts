@@ -2,7 +2,7 @@
  * Sui GraphQL Service - Fetches contract code from on-chain
  */
 
-const SUI_GRAPHQL_ENDPOINT = 'https://sui-mainnet.mystenlabs.com/graphql';
+const SUI_GRAPHQL_ENDPOINT = 'https://sui-mainnet.mystenlabs.com/graphql'; // Kept for reference
 
 interface SuiMovePackage {
     address: string;
@@ -44,14 +44,16 @@ export async function fetchPackageCode(packageId: string): Promise<string> {
     `;
 
     try {
-        const response = await fetch(SUI_GRAPHQL_ENDPOINT, {
+        const endpoint = '/api/sui';
+
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 query,
-                variables: { id: formattedId },
+                variables: { id: formattedId }
             }),
         });
 
