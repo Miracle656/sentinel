@@ -2,7 +2,6 @@
  * Sui GraphQL Service - Fetches contract code from on-chain
  */
 
-const SUI_GRAPHQL_ENDPOINT = 'https://sui-mainnet.mystenlabs.com/graphql'; // Kept for reference
 
 interface SuiMovePackage {
     address: string;
