@@ -100,8 +100,13 @@ Start with 100 points. Deduct for each vulnerability found:
 - Low: -5 points
 Minimum score is 0.
 
+### IMPORTANT: False Positive Prevention
+1. **Centralization is NOT a Vulnerability**: If an Admin/Owner holds a Capability (e.g., AdminCap, MintCap), this is standard design. Do NOT map it as a vulnerability unless that Capability is publicly exposed to *unauthorized* users.
+2. **Missing Input Validation**: Only flag if it leads to funds stealing or state corruption.
+3. **Store Ability**: A Capability having store is NOT a bug unless it is wrongly wrapped in a public Shared Object.
+
 ### Output Instructions
-Identify security issues related to: defaults, capabilities, shared objects, transfer rules, upgrades, and arithmetic.
+Identify security issues related to: leaks, shared objects, logic errors, and access control.
 
 Return JSON ONLY. Do not use Markdown code blocks.
 {
