@@ -92,15 +92,21 @@ ${code}
 ### Knowledge Base (Patterns to check)
 ${knowledgeBaseContext}
 
+### Scoring Rubric
+Start with 100 points. Deduct for each vulnerability found:
+- Critical: -30 points
+- High: -15 points
+- Medium: -10 points
+- Low: -5 points
+Minimum score is 0.
+
 ### Output Instructions
 Identify security issues related to: defaults, capabilities, shared objects, transfer rules, upgrades, and arithmetic.
 
-Return JSON ONLY:
+Return JSON ONLY. Do not use Markdown code blocks.
 {
-Return JSON ONLY:
-{
-  "summary": "Brief summary",
-  "score": 0-100 (integer, lower is worse security),
+  "summary": "Brief summary (Max 30 words)",
+  "score": 0-100 (integer, calculated using rubric),
   "attack_diagram": "REQUIRED. Mermaid sequenceDiagram string illustrating the attack flow. Use \\n for newlines. Start with 'sequenceDiagram'. Participant names must be simple words (no '::' or special chars).",
   "vulnerabilities": [
     {
@@ -108,7 +114,7 @@ Return JSON ONLY:
       "type": "Vulnerability Type",
       "location": "Function name",
       "title": "Short title",
-      "description": "Concise explanation.",
+      "description": "Concise explanation (Max 15 words).",
       "code_snippet": "Relevant code",
       "fix": "Fixed code snippet",
       "confidence": "High"
@@ -165,8 +171,8 @@ export default async function handler(req, res) {
                 }],
                 generationConfig: {
                     maxOutputTokens: 8192,
-                    temperature: 1.0,
-                    topP: 0.95,
+                    temperature: 0.2,
+                    topP: 0.8,
                 }
             })
         });
