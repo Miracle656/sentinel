@@ -110,26 +110,27 @@ Identify security issues related to: leaks, shared objects, logic errors, and ac
 
 Return JSON ONLY. Do not use Markdown code blocks.
 CRITICAL RULES:
-- Maximum 3 vulnerabilities total (prioritize by severity)
-- No quotes in code_snippet field, use single quotes instead
+- Maximum 2 vulnerabilities total (only the most critical)
+- No double quotes in code_snippet or fix fields
 - Keep ALL text fields extremely concise
+- attack_diagram is OPTIONAL - skip if contract is long
 {
-  "summary": "Brief summary (Max 20 words)",
+  "summary": "Brief summary (Max 15 words)",
   "score": 0-100 (integer, calculated using rubric),
-  "attack_diagram": "REQUIRED. Mermaid sequenceDiagram string illustrating the attack flow. Use \\n for newlines. Start with 'sequenceDiagram'. Participant names must be simple words (no '::' or special chars).",
+  "attack_diagram": "OPTIONAL. Only include for simple contracts. Mermaid sequenceDiagram. Use \\n for newlines.",
   "vulnerabilities": [
     {
       "severity": "Critical" | "High" | "Medium" | "Low",
-      "type": "Vulnerability Type",
-      "location": "Function name",
-      "title": "Short title (Max 5 words)",
-      "description": "Concise explanation (Max 10 words).",
-      "code_snippet": "Relevant code (Max 100 chars, use single quotes)",
-      "fix": "Fixed code snippet (Max 150 chars, use single quotes)",
+      "type": "Vulnerability Type (Max 3 words)",
+      "location": "Function name only",
+      "title": "Short title (Max 4 words)",
+      "description": "Concise explanation (Max 8 words)",
+      "code_snippet": "Key line only (Max 80 chars)",
+      "fix": "Fixed line only (Max 100 chars)",
       "confidence": "High"
     }
   ],
-  "recommendations": ["Action item 1", "Action item 2"]
+  "recommendations": ["Short action 1 (Max 8 words)", "Short action 2 (Max 8 words)"]
 }`;
 }
 
@@ -179,7 +180,7 @@ export default async function handler(req, res) {
                     }]
                 }],
                 generationConfig: {
-                    maxOutputTokens: 4096,
+                    maxOutputTokens: 3000,
                     temperature: 0.1,
                     topP: 0.8,
                 }
