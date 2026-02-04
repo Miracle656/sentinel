@@ -94,8 +94,8 @@ ${knowledgeBaseContext}
 
 ### Scoring Rubric
 Start with 100 points. Deduct for each vulnerability found:
-- Critical: -30 points
-- High: -15 points
+- Critical: -60 points
+- High: -25 points
 - Medium: -10 points
 - Low: -5 points
 Minimum score is 0.
