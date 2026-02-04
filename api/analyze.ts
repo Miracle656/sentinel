@@ -94,16 +94,16 @@ ${knowledgeBaseContext}
 
 ### Scoring Rubric
 Start with 100 points. Deduct for each vulnerability found:
-- Critical: -60 points
-- High: -25 points
-- Medium: -10 points
-- Low: -5 points
+- Critical: -60 points (Direct fund loss, capability leaks that allow unauthorized admin actions)
+- High: -25 points (Predictable randomness, timestamp manipulation, logic errors that impact fairness)
+- Medium: -10 points (Missing checks, potential DoS)
+- Low: -5 points (Code quality, gas optimization)
 Minimum score is 0.
 
 ### IMPORTANT: False Positive Prevention
-1. **Centralization is NOT a Vulnerability**: If an Admin/Owner holds a Capability (e.g., AdminCap, MintCap), this is standard design. Do NOT map it as a vulnerability unless that Capability is publicly exposed to *unauthorized* users.
+1. **Centralization is NOT a Vulnerability**: If an Admin/Owner holds a Capability (e.g., AdminCap, MintCap), this is standard design. Do NOT mark it as a vulnerability unless that Capability is publicly exposed to *unauthorized* users.
 2. **Missing Input Validation**: Only flag if it leads to funds stealing or state corruption.
-3. **Store Ability**: A Capability having store is NOT a bug unless it is wrongly wrapped in a public Shared Object.
+3. **Store Ability - When It IS Dangerous**: A Capability having the store ability IS a critical vulnerability if it is transferred using public_transfer or made available in a Shared Object. If the Capability only uses transfer (private) and stays with the owner, it is safe.
 
 ### Output Instructions
 Identify security issues related to: leaks, shared objects, logic errors, and access control.
