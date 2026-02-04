@@ -109,8 +109,12 @@ Minimum score is 0.
 Identify security issues related to: leaks, shared objects, logic errors, and access control.
 
 Return JSON ONLY. Do not use Markdown code blocks.
+CRITICAL RULES:
+- Maximum 3 vulnerabilities total (prioritize by severity)
+- No quotes in code_snippet field, use single quotes instead
+- Keep ALL text fields extremely concise
 {
-  "summary": "Brief summary (Max 30 words)",
+  "summary": "Brief summary (Max 20 words)",
   "score": 0-100 (integer, calculated using rubric),
   "attack_diagram": "REQUIRED. Mermaid sequenceDiagram string illustrating the attack flow. Use \\n for newlines. Start with 'sequenceDiagram'. Participant names must be simple words (no '::' or special chars).",
   "vulnerabilities": [
@@ -118,10 +122,10 @@ Return JSON ONLY. Do not use Markdown code blocks.
       "severity": "Critical" | "High" | "Medium" | "Low",
       "type": "Vulnerability Type",
       "location": "Function name",
-      "title": "Short title",
-      "description": "Concise explanation (Max 15 words).",
-      "code_snippet": "Relevant code",
-      "fix": "Fixed code snippet",
+      "title": "Short title (Max 5 words)",
+      "description": "Concise explanation (Max 10 words).",
+      "code_snippet": "Relevant code (Max 100 chars, use single quotes)",
+      "fix": "Fixed code snippet (Max 150 chars, use single quotes)",
       "confidence": "High"
     }
   ],
@@ -175,8 +179,8 @@ export default async function handler(req, res) {
                     }]
                 }],
                 generationConfig: {
-                    maxOutputTokens: 8192,
-                    temperature: 0.2,
+                    maxOutputTokens: 4096,
+                    temperature: 0.1,
                     topP: 0.8,
                 }
             })
